@@ -9,13 +9,7 @@
 #include <cryptopp/base64.h>
 #include <fstream>
 #include <sstream>
-#include <map>
 #include <vector>
-#include <cstring>
-#include <FL/Fl.H>
-#include <FL/Fl_Window.H>
-#include <FL/Fl_Button.H>
-#include <FL/fl_ask.H>
 #include <filesystem>
 
 
@@ -262,7 +256,8 @@ void display_menu() {
     std::cout << "\nPassword Manager CLI\n";
     std::cout << "1. Add Password\n";
     std::cout << "2. View Password\n";
-    std::cout << "3. Exit\n";
+    std::cout << "3. Remove Password\n";
+    std::cout << "4. Exit\n";
     std::cout << "Enter your choice: ";
 }
 
@@ -349,6 +344,14 @@ void view_passwords(const std::vector<entryPassword>& entries) {
     }
 }
 
+void remove_password(std::vector<entryPassword>& entries, int index){
+    if (index < entries.size()){
+        entries.erase(entries.begin()+index);
+    } else {
+        std::cout << "Invalid index";
+    }
+}
+
 int main() {
     
     std::string filename = "passwords.txt";
@@ -398,6 +401,12 @@ int main() {
                     view_passwords(entries);
                     break; }
                 case 3: {
+                    std::string index;
+                    std::cout << "Enter index to remove password \n";
+                    std::getline(std::cin, index);
+                    remove_password(entries, std::stoi(index));
+                    break; }
+                case 4: {
                     std::cout << "Exiting...\n";
                     break; }
                 default:{
@@ -405,7 +414,7 @@ int main() {
                     break;
                 }
             }
-        } while (choice != 3);
+        } while (choice != 4);
 
     } else {
         return 0;
