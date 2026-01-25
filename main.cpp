@@ -71,13 +71,6 @@ public:
 
 
 
-
-std::vector<entryPassword> passwords;
-
-
-
-
-
 std::string decrypt(const std::string& cipher_text, const std::vector<uint8_t>& iv, const std::vector<uint8_t>& key) {
     std::string plain_text;
 
@@ -158,8 +151,6 @@ bool run_check(){
     std::ifstream inFile("master_hash.txt");
     std::getline(inFile, stored_hash);
 
-    std::cout << "Master hash variable is: " << stored_hash << "\n";
-
     std::string keyLine;
     std::getline(inFile, keyLine);
     std::vector<uint8_t> stored_key;
@@ -171,12 +162,6 @@ bool run_check(){
     }
 
     entryPassword::key = stored_key;
-
-    for (size_t i = 0; i<stored_key.size();++i) {
-        std::cout << "Key variable is: " << stored_key[i] << "\n";
-
-    }
-
 
     inFile.close();
 
@@ -334,7 +319,6 @@ std::vector<entryPassword> readFromFile(const std::string& filename) {
                 std::string token;
                 for (int i = 0; i < 16 && std::getline(ss, token, ','); ++i) {
                     ivBytes.push_back(static_cast<uint8_t>(std::stoi(token)));
-                    std::cout << "token is " << token << "\n";
                 }
 
                 entries.emplace_back(service, username, password, ivBytes);
