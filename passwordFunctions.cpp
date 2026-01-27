@@ -91,6 +91,7 @@ bool run_check(){
         std::cout << "Enter master password" << "!\n";
         std::getline(std::cin, master_password);
         std::string input_hash = hashMasterPassword(master_password);
+        memset(master_password.data(), 0, master_password.size()); //Clear password from memory
         if (input_hash == stored_hash) {
             std::cout << "Master password is correct." << std::endl;
                 return true;
@@ -134,6 +135,7 @@ bool run_check(){
         );
 
         std::string new_hash = hashMasterPassword(new_master_password);
+        memset(new_master_password.data(), 0, new_master_password.size()); //Clear password from memory
         std::ofstream outFile("master_hash.txt");
         outFile << new_hash << "\n";
 
