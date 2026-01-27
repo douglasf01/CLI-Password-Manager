@@ -22,7 +22,7 @@ int main() {
     entries = readFromFile(filename);
 
     if (entries.empty()) {
-            std::cout << "No existing passwords found. Starting with an empty list.\n";
+            std::cout << "Starting with an empty list.\n";
         } else {
             std::cout << "Loaded " << entries.size() << " passwords from file.\n";
         }

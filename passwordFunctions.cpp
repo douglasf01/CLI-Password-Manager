@@ -104,7 +104,7 @@ bool run_check(){
 
     else {
         std::string new_master_password;
-        std::cout << "Enter new master password: " << "!\n";
+        std::cout << "Enter new master password: ";
         std::getline(std::cin, new_master_password);
 
         CryptoPP::PKCS5_PBKDF2_HMAC<CryptoPP::SHA256> pbkdf;
@@ -208,7 +208,7 @@ bool fileExists(const std::string& filename) {
 std::vector<entryPassword> readFromFile(const std::string& filename) {
     std::vector<entryPassword> entries;
     if (!fileExists(filename)) {
-        std::cout << "File does not exist. Creating a new file when saving.\n";
+        std::cout << "No password file exist.\n";
         return entries; 
     }
     std::ifstream inFile(filename);
