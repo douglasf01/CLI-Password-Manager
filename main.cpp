@@ -18,9 +18,7 @@
 int main() {
     
     std::string filename = "passwords.txt";
-
     std::vector<entryPassword> entries;
-
     entries = readFromFile(filename);
 
     if (entries.empty()) {
@@ -32,20 +30,16 @@ int main() {
     bool auth = run_check();
 
     if (auth  == true) {
-
         display_menu();
         int choice;
         int index;
-
         std::string input;
 
         do {
             std::cout << "Enter your choice: ";
             std::cin >> input;
             std::cin.ignore();
-
             try {
-
                 choice = std::stoi(input);
                         
             switch (choice) {

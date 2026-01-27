@@ -13,6 +13,28 @@
 #include <vector>
 #include <filesystem>
 
+std::string encrypt(const std::string& input, const std::vector<uint8_t>& iv, const std::vector<uint8_t>& key){
+
+    std:: string cipher;
+
+    auto aes = CryptoPP::AES::Encryption(key.data(), key.size());
+    auto aes_cbc = CryptoPP::CBC_Mode_ExternalCipher::Encryption(aes, iv.data());
+
+    CryptoPP::StringSource ss(
+        input,
+        true,
+        new CryptoPP::StreamTransformationFilter(
+            aes_cbc,
+            new CryptoPP::Base64Encoder(
+                new CryptoPP::StringSink(cipher),
+                false //Disable insertion of newline
+            )
+        )
+    );
+
+    return cipher;
+}
+
 std::string decrypt(const std::string& cipher_text, const std::vector<uint8_t>& iv, const std::vector<uint8_t>& key) {
     std::string plain_text;
 
@@ -32,27 +54,6 @@ std::string decrypt(const std::string& cipher_text, const std::vector<uint8_t>& 
     return plain_text;
 }
 
-std::string encrypt(const std::string& input, const std::vector<uint8_t>& iv, const std::vector<uint8_t>& key){
-
-    std:: string cipher;
-
-    auto aes = CryptoPP::AES::Encryption(key.data(), key.size());
-    auto aes_cbc = CryptoPP::CBC_Mode_ExternalCipher::Encryption(aes, iv.data());
-
-    CryptoPP::StringSource ss(
-        input,
-        true,
-        new CryptoPP::StreamTransformationFilter(
-            aes_cbc,
-            new CryptoPP::Base64Encoder(
-                new CryptoPP::StringSink(cipher),
-                false // Disable insertion of newlines
-            )
-        )
-    );
-
-    return cipher;
-}
 
 std::string hashMasterPassword(const std::string& password) {
     std::string digest;
@@ -108,9 +109,13 @@ bool run_check(){
 
         CryptoPP::PKCS5_PBKDF2_HMAC<CryptoPP::SHA256> pbkdf;
     
+        CryptoPP::byte saltY[16]; //Define a salt of 16 bytes
+        CryptoPP::AutoSeededRandomPool rand;
+        rand.GenerateBlock(saltY, sizeof(saltY)); //Generate random bytes for the salt
+
         CryptoPP::byte purpose = 0;
-        const CryptoPP::byte* salt = nullptr;
-        size_t saltLen = 0;
+        const CryptoPP::byte* salt = saltY;
+        size_t saltLen = sizeof(saltY);
         unsigned int iterations = 1000;
         double timeInSeconds = 0.0;
         
@@ -181,9 +186,9 @@ void writeToFile(const std::vector<entryPassword>& entries, const std::string& f
     std::ofstream outFile(filename);
     if (outFile.is_open()) {
         for (const auto& entry : entries) {
-            // Write service, username, password, and IV to the file
+            //Write service, username, password, and IV to the file
             outFile << entry.get_service() << "," << entry.get_username() << "," << entry.get_password();
-            // Write the IV as a sequence of bytes separated by spaces
+            //Write the IV as a sequence of bytes
             for (uint8_t byte : entry.get_iv()) {
                 outFile << "," << static_cast<int>(byte);
             }
@@ -204,7 +209,7 @@ std::vector<entryPassword> readFromFile(const std::string& filename) {
     std::vector<entryPassword> entries;
     if (!fileExists(filename)) {
         std::cout << "File does not exist. Creating a new file when saving.\n";
-        return entries; // Return empty vector
+        return entries; 
     }
     std::ifstream inFile(filename);
     if (inFile.is_open()) {
@@ -217,14 +222,11 @@ std::vector<entryPassword> readFromFile(const std::string& filename) {
                 std::string service, username, password;
                 std::vector<uint8_t> ivBytes;
 
-                // Read service
                 std::getline(ss, service, ',');
-                // Read username
                 std::getline(ss, username, ',');
-                // Read password
                 std::getline(ss, password, ',');
 
-                // Read IV bytes (assuming 16 bytes)
+                //Read IV bytes (assuming 16 bytes)
                 std::string token;
                 for (int i = 0; i < 16 && std::getline(ss, token, ','); ++i) {
                     ivBytes.push_back(static_cast<uint8_t>(std::stoi(token)));
@@ -265,12 +267,3 @@ void remove_password(std::vector<entryPassword>& entries, int index){
         std::cout << "Invalid index" << "\n";
     }
 }
-
-
-
-
-
-
-
-
-

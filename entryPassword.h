@@ -1,4 +1,3 @@
-//entryPassword.h
 #ifndef ENTRY_PASSWORD_H
 #define ENTRY_PASSWORD_H
 
@@ -6,6 +5,9 @@
 #include <vector>
 #include <cstdint>
 
+/**
+* Represents a password with service, username, encrypted password and initialization vector (IV).
+*/
 class entryPassword {
 
 private:
