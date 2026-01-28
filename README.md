@@ -3,7 +3,9 @@ CLI based password manager with [AES](https://www.cryptopp.com/wiki/Advanced_Enc
 There is an executable file included in the project which can run on Unix systems.
 To change the source code, atleast C++17 and Crypto++ has to be installed. Otherwise, the program is statically linked to the Crypto++ library so it can run anyway.
 
-The encryption is done using the master key and a unique initializing vector (IV). This IV is "salted", which means that an extra layer of randommness has been used to derive the vector.  
+The encryption is done using the master key and a unique initializing vector (IV). The master key is set during the first run and then stored as a hash. To unlock the vault of passwords, you have to enter the master password, and if the hash of the entered password matches, the vault unlocks. Setting a good master password is essential. 
+
+This IV is "salted", which means that an extra layer of randommness has been used to derive the vector. A consequence of this is that multiple passwords, using the same password, does not generate an identical hash.
 
 # Prerequisits
 - **Unix** based system.
