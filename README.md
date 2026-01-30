@@ -30,5 +30,6 @@ This IV is "salted", which means that an extra layer of randommness has been use
 # Future Improvements
 - Implement [authenticated AES](https://www.cryptopp.com/wiki/Authenticated_Encryption)
 - Develop a graphical user interface (GUI)
-- Improve function logic, improve efficiency etc.
+- Improve function logic, efficiency
+- More functionality, such as editing current password entries
 ```
