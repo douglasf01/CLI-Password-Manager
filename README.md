@@ -33,3 +33,7 @@ This IV is "salted", which means that an extra layer of randommness has been use
 - Improve function logic, efficiency
 - More functionality, such as editing current password entries
 ```
+
+# Misc
+
+Thanks to Tsvetomir Dimitrov [introduction](https://petanode.com/posts/brief-introduction-to-cryptopp/) on the Crypto++ library.
