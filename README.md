@@ -20,6 +20,9 @@ This IV is "salted", which means that an extra layer of randommness has been use
     ```
 
 # Build from Source
+
+Below is an instruction for using g++ as compiler. 
+
 1. **Install dependencies**:
    ```sh
    sudo apt install g++ libcrypto++-dev
