@@ -5,9 +5,10 @@ To change the source code, atleast C++17 and Crypto++ has to be installed. Other
 
 ![Screenshot for features.](screenshot.png)
 
-The encryption is executed using the master key and a unique initializing vector (IV). The master key is set during the first run and then stored as a hash. To unlock the vault of passwords, you have to enter the master password, and if the hash of the entered password matches, the vault unlocks. Setting a good master password is essential. 
+The encryption is executed using the master key and a unique initializing vector (IV). Using an IV, implies that identical passwords does not have the same encryption key. This IV is "salted", which means an extra layer of randomness has been used to derive it.
 
-This IV is "salted", which means that an extra layer of randommness has been used to derive the vector. This means that if we have multiple identical passwords stored, then the encryption string for these passwords are not identical.
+The master key is set during the first run and then stored as a hash. To unlock the vault of passwords, you have to enter the master password, and if the hash of the entered password matches, the vault unlocks. Setting a good master password is essential. 
+
 
 # Prerequisits
 - **Unix** based system.
