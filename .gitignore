@@ -1,1 +1,4 @@
-*.txt
+build/
+build-*/
+vault.dat
+vault.dat.tmp
